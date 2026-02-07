@@ -7,7 +7,31 @@ import markdown
 from pathlib import Path
 
 def convert_markdown_to_html(input_file, output_file):
-    """Convert markdown file to HTML with proper styling."""
+    """
+    Convert markdown file to HTML with proper styling.
+    
+    Args:
+        input_file (str): Path to the input markdown file
+        output_file (str): Path for the output HTML file
+    
+    Returns:
+        None
+    
+    Raises:
+        FileNotFoundError: If the input file does not exist
+        IOError: If there are issues reading the input or writing the output
+    
+    Extensions used:
+        - extra: Tables, fenced code blocks, and other extras
+        - codehilite: Syntax highlighting for code blocks
+        - toc: Table of contents generation
+        - sane_lists: Better list handling
+        - nl2br: Convert newlines to <br> tags
+    """
+    
+    # Check if input file exists
+    if not Path(input_file).exists():
+        raise FileNotFoundError(f"Input file '{input_file}' not found")
     
     # Read the markdown file
     with open(input_file, 'r', encoding='utf-8') as f:
@@ -202,4 +226,12 @@ if __name__ == "__main__":
     input_file = "README.md"
     output_file = "the-book-of-secret-knowledge.html"
     
-    convert_markdown_to_html(input_file, output_file)
+    try:
+        convert_markdown_to_html(input_file, output_file)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        print("Please ensure README.md exists in the current directory.")
+        exit(1)
+    except Exception as e:
+        print(f"An error occurred during conversion: {e}")
+        exit(1)
